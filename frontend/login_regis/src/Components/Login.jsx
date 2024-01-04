@@ -1,31 +1,30 @@
 import React from "react";
 import { useState } from "react";
-// import { auth } from "../../firebase";
-// import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
+import Axios from "../api/api";
 
 const Login = ({ showLogin, setShowLogin }) => {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [token,setToken]=useState(null);
+
   const toggleLogin = () => {
     setShowLogin(!showLogin);
   };
-  // const auth = getAuth();
+
   const navigate = useNavigate(); // Access the navigate function
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const res = await Axios.post("accounts/token/", { username, password });
+    const token =res.data.access
+    console.log("this is the token..store this in the localstorage",token)
+    localStorage.setItem("token",token)
+    setToken(token)
+    // The replace: true option in the navigate function means that the navigation will replace the current entry in the history stack instead of adding a new one1. This is useful when you want to redirect the user to another page without keeping the previous page in the history stack.
+    navigate("/dashboard", { replace: true }); // Navigate to the dashboard page
 
-  //   try {
-  //     await signInWithEmailAndPassword(auth, email, password);
-  //     // Redirect to protected route or display success message
-  //     console.log("logged in");
-  //     navigate("/Dashboard"); // Redirect to the protected route
-  //   } catch (error) {
-  //     console.error(error);
-  //     // Display error message to the user
-  //   }
-  // };
+  };
 
   return (
     <>
@@ -47,22 +46,20 @@ const Login = ({ showLogin, setShowLogin }) => {
               <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl ">
                 Sign in to your account
               </h1>
-              <form className="space-y-4 md:space-y-6" 
-              // onSubmit={handleSubmit}
-              >
+              <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit}>
                 <div>
                   <label
-                    htmlFor="email"
+                    htmlFor="username"
                     className="block mb-2 text-sm font-medium text-gray-900 "
                   >
                     Your email
                   </label>
                   <input
-                    type="email"
-                    name="email"
-                    id="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    type="username"
+                    name="username"
+                    id="username"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                     placeholder="name@company.com"
                     required=""

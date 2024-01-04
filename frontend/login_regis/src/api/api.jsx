@@ -1,16 +1,13 @@
-import Axios1 from "axios";
-const Axios = Axios1.create({
-  baseURL: process.env.REACT_PUBLIC_API_URL || process.env.API_URL,
-});
+import axios from 'axios'; // Renamed the imported type
 
-Axios.interceptors.request.use(async (request) => {
-  const token = localStorage.getItem(
-    process.env.REACT_PUBLIC_TOKEN || process.env.TOKEN
-  );
-  if (token) {
-    request.headers["Authorization"] = `Bearer ${token}`;
+const AxiosInstance = axios.create({
+  baseURL: 'http://192.168.0.117:8000/api/',
+});
+AxiosInstance.interceptors.request.use(async (request) => {
+  const access_token = localStorage.getItem('token');
+  if (access_token) {
+    request.headers['Authorization'] = `Bearer ${access_token}`;
   }
   return request;
 });
-
-export default Axios;
+export default AxiosInstance;

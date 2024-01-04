@@ -1,6 +1,5 @@
 import React from "react";
-// import { auth } from "../../firebase";
-// import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import Axios from "../api/api";
 
 
 import { useState } from "react";
@@ -9,23 +8,17 @@ function Signup({ showLogin, setShowLogin }) {
   const toggleLogin = () => {
     setShowLogin(!showLogin);
   };
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
-  // const auth = getAuth();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const res = await Axios.post("accounts/register", { username, password });
+    console.log(res);
+    setShowLogin(true);
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
+  };
 
-  //   try {
-  //     await createUserWithEmailAndPassword(auth,email, password);
-  //     console.log("i am registerd successfully")
-  //     // Redirect to protected route or display success message
-  //   } catch (error) {
-  //     console.error(error);
-  //     // Display error message to the user
-  //   }
-  // };
   return (
     <>
       <section className="bg-gray-50 ">
@@ -46,22 +39,20 @@ function Signup({ showLogin, setShowLogin }) {
               <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl ">
                 Create and account
               </h1>
-              <form className="space-y-4 md:space-y-6" 
-              // onSubmit={handleSubmit}
-              >
+              <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit}>
                 <div>
                   <label
-                    htmlFor="email"
+                    htmlFor="username"
                     className="block mb-2 text-sm font-medium text-gray-900 "
                   >
                     Your email
                   </label>
                   <input
-                    type="email"
-                    name="email"
-                    id="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)} 
+                    type="username"
+                    name="username"
+                    id="username"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-[#2563eb] focus:border-[#2563eb] block w-full p-2.5"
                     placeholder="name@company.com"
                     required=""
