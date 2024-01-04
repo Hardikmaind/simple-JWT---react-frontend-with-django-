@@ -10,7 +10,7 @@ const Login = ({ showLogin, setShowLogin }) => {
   const toggleLogin = () => {
     setShowLogin(!showLogin);
   };
-  const auth = getAuth();
+  // const auth = getAuth();
   const navigate = useNavigate(); // Access the navigate function
 
   // const handleSubmit = async (e) => {
