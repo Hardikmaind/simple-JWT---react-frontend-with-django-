@@ -1,0 +1,1 @@
+http://127.0.0.1:8000/api/accounts/register         => this is for registration. you will get the token in return
